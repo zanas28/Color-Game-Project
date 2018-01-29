@@ -34,7 +34,7 @@ function reset() {
             squares[i].style.backgroundColor = colors[i]
         } else {
             squares[i].style.display = 'none';
-            squares[i].style.backgroundColor = colors[i]
+            // squares[i].style.backgroundColor = colors[i]
         }
     }
     h1.style.backgroundColor = 'steelblue';
