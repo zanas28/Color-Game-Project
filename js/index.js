@@ -1,53 +1,79 @@
-let colors = generateRandomColors(6);
-
+let numOfSquares = 6;
+let colors = generateRandomColors(numOfSquares);
 let squares = document.querySelectorAll('.square');
 let colorDisplay = document.getElementById('colorDisplay');
-let pickContent = pickColor();
+let pickedColor = pickColor();
 let message = document.getElementById('message');
 let resetButton = document.querySelector('#reset');
 let h1 = document.querySelector('h1');
+let modeButtons = document.querySelectorAll('.mode');
 
-console.log(resetButton);
+reset();
+setupMode();
+setupSquare();
 
-resetButton.addEventListener('click', function() {
-    colors = generateRandomColors(6);
-    pickContent = pickColor();
-    colorDisplay.textContent = pickContent;
-    for (let index = 0; index < squares.length; index++) {
-        squares[index].style.backgroundColor = colors[index]
+function setupMode() {
+    for (let i = 0; i < modeButtons.length; i++) {
+        modeButtons[i].addEventListener('click', function() {
+            modeButtons[0].classList.remove('selected');
+            modeButtons[1].classList.remove('selected');
+            this.classList.add('selected');
+            this.textContent === 'Easy' ? numOfSquares = 3 : numOfSquares = 6;
+            reset();
+        })
+    }
+}
+
+function reset() {
+    colors = generateRandomColors(numOfSquares);
+    pickedColor = pickColor();
+    colorDisplay.textContent = pickedColor;
+    for (let i = 0; i < squares.length; i++) {
+        if(colors[i]) {
+            squares[i].style.display = 'block';
+            squares[i].style.backgroundColor = colors[i]
+        } else {
+            squares[i].style.display = 'none';
+            squares[i].style.backgroundColor = colors[i]
+        }
     }
     h1.style.backgroundColor = 'steelblue';
     resetButton.textContent = 'New Colors';
+    message.textContent = '';
+}
+
+resetButton.addEventListener('click', function() {
+    reset();
 })
 
-colorDisplay.textContent = pickContent;
-
-for(let i = 0; i < squares.length; i++) {
-    // add initial colors
-    squares[i].style.backgroundColor = colors[i];
-
-    //add click listeners to squares
-    squares[i].addEventListener('click', function() {
-        //grab color of click color and compare with picked color
-        let clickedColor = this.style.backgroundColor;
-        console.log(pickContent);
-        if (clickedColor === pickContent) {
-            message.textContent = 'Correct!';
-            changeColors(clickedColor);
-            resetButton.textContent = 'Play again?'
-            h1.style.backgroundColor = clickedColor;
-        } else {
-            message.textContent = 'Try Again'
-            this.style.backgroundColor = '#232323';
-        }
-    })
+function setupSquare() {
+    for(let i = 0; i < squares.length; i++) {
+        // add initial colors
+        squares[i].style.backgroundColor = colors[i];
+    
+        //add click listeners to squares
+        squares[i].addEventListener('click', function() {
+            //grab color of click color and compare with picked color
+            let clickedColor = this.style.backgroundColor;
+            console.log(pickedColor);
+            if (clickedColor === pickedColor) {
+                message.textContent = 'Correct!';
+                changeColors(clickedColor);
+                resetButton.textContent = 'Play again?'
+                h1.style.backgroundColor = clickedColor;
+            } else {
+                message.textContent = 'Try Again'
+                this.style.backgroundColor = '#232323';
+            }
+        })
+    }
 }
 
 function changeColors(color) {
     // loop all colors
-    for (let index = 0; index < squares.length; index++) {
+    for (let i = 0; i < squares.length; i++) {
         // change each color
-        squares[index].style.backgroundColor = color;
+        squares[i].style.backgroundColor = color;
     }
 }
 
@@ -61,7 +87,7 @@ function generateRandomColors(num) {
     let arr = [];
 
     // add num random colors to array
-    for (let index = 0; index < num; index++) {
+    for (let i = 0; i < num; i++) {
         //get random color and push into array
         arr.push(randomColor());
     }
